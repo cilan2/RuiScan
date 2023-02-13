@@ -5,10 +5,10 @@ import com.reve2se.ruiscan.utils.ExecUtil;
 import com.reve2se.ruiscan.utils.OsUtil;
 import com.reve2se.ruiscan.utils.StringUtil;
 import com.reve2se.ruiscan.model.Excel2Txt;
+import com.reve2se.ruiscan.utils.DirUtil;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class MainForm {
     public static MainForm instance;
@@ -49,7 +50,6 @@ public class MainForm {
     private JButton showAllPocButton;
     private JTextField choosePocTextField;
     private JButton pocConfirmButton;
-    private JComboBox comboBox1;
     private JButton targetConfirmButton;
     private JButton pocShowCommandButton;
     private JButton startExecPocButton;
@@ -72,12 +72,16 @@ public class MainForm {
     private JButton openOneforallConfigDirButton;
     private JLabel XrayFileChoose;
     private JTextField showXrayFileChoose;
+    private JTextField chooseExsitTextFiled;
+    private JButton fofaButton;
+    private JTextField showFofaMapFileChoose;
     private static DB db;
     public static String enscanPathFull;
     public static String oneforallPathFull;
     public static String jsfinderPathFull;
     public static String ciprPathFull;
     public static String xrayPathFull;
+    public static String fofaMapPathFull;
     public static String companyNmae;
     public static String jsfinderTargetUrl;
     public static String ciprDomainDirPath;
@@ -85,11 +89,21 @@ public class MainForm {
     public static String jsfinderChooseDomainDir;
     public static String oneforallChooseDomainDir;
     public static String outputFileConpanyName;
+    public static String currentPath;
+    public static String resPath;
+    public static String startPath;
+    public static String startName;
+    public static String domainFilePath;
+    private volatile boolean stop = false;
 
 
-    //  处理配置文件
+//  处理配置文件
 //  若存在ruiscan.db文件直接读取工具路径，若不存在初始化
     public void init() {
+        File dictory = new File("");
+        currentPath = dictory.getAbsolutePath();
+        System.out.println("运行RuiScan的目录为：" + currentPath);
+        resPath = DirUtil.dirStructure(new String[]{currentPath, "res"});
         try {
             Path dbPath = Paths.get("ruiscan.db");
             if (Files.exists(dbPath)) {
@@ -102,22 +116,20 @@ public class MainForm {
                 db.setLastJsfinderPath(null);
                 db.setLastCiprPath(null);
                 db.setLastXrayPath(null);
+                db.setLastFofaMapPath(null);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    private volatile boolean stop = false;
-
 //  一个被封装好的执行命令
     private void execAndFresh(String[] finalCmd) {
 //      将outputTextArea清空
-        outputTextArea.setText(null);
+//        outputTextArea.setText(null);
 //      创建一个新的并发
         Thread thread = new Thread(() -> {
             try {
-
                 Process process = ExecUtil.exec(finalCmd);
                 if (process == null) {
                     outputTextArea.append("process == null");
@@ -138,6 +150,7 @@ public class MainForm {
                 }
                 String thisLine;
                 while ((!stop) && (thisLine = isReader.readLine()) != null) {
+                    System.out.println(thisLine);
                     String cmd = String.join(" ", finalCmd);
                     if (cmd.contains("ENScan")) {
                         if (thisLine.contains("根据关键词查询到公司")) {
@@ -187,48 +200,54 @@ public class MainForm {
     }
 
 //  显示从数据库读到的工具路径过刚刚设置好的工具路径后进行初始化
-    public void loadRuiscan(String enscanPath, String oneforallPath, String jsfinderPath, String ciprPath, String xrayPath) {
+    public void loadRuiscan(String enscanPath, String oneforallPath, String jsfinderPath, String ciprPath, String xrayPath, String fofaMapPath) {
 //        String targetDir = Paths.get(enscanPath).toFile().getParent() + File.separator;
         enscanPathFull = enscanPath;
         oneforallPathFull = oneforallPath;
         jsfinderPathFull = jsfinderPath;
         ciprPathFull = ciprPath;
         xrayPathFull = xrayPath;
+        fofaMapPathFull = fofaMapPath;
         showEnscanFileChoose.setText(enscanPath);
         showOneforallFileChoose.setText(oneforallPath);
         showJsfinderFileChoose.setText(jsfinderPath);
         showCiprFileChoose.setText(ciprPath);
         showXrayFileChoose.setText(xrayPath);
-        outputTextArea.append("ENScan工具自检\n");
+        showFofaMapFileChoose.setText(fofaMapPath);
+//        outputTextArea.append("ENScan工具自检\n");
         String[] ensCmd = new String[]{"python", enscanPathFull, "--help"};
         execAndFresh(ensCmd);
         outputTextArea.setText(null);
-        outputTextArea.append("OneForAll工具自检\n");
+//        outputTextArea.append("OneForAll工具自检\n");
         String[] oneforallCmd = new String[]{"python", oneforallPathFull, "version"};
         execAndFresh(oneforallCmd);
         outputTextArea.setText(null);
-        outputTextArea.append("JsFinder工具自检\n");
+//        outputTextArea.append("JsFinder工具自检\n");
         String[] jsfindCmd = new String[]{"python", jsfinderPathFull, "--help"};
         execAndFresh(jsfindCmd);
         outputTextArea.setText(null);
-        outputTextArea.append("cIPR工具自检\n");
+//        outputTextArea.append("cIPR工具自检\n");
         String[] ciprCmd = new String[]{ciprPathFull};
         execAndFresh(ciprCmd);
-        outputTextArea.append("xray工具自检\n");
+//        outputTextArea.append("xray工具自检\n");
         String[] xrayCmd = new String[]{xrayPathFull, "--help"};
         execAndFresh(xrayCmd);
+//        outputTextArea.append("FofaMap工具自检\n");
+        String[] fofaMapCmd = new String[]{"python", fofaMapPathFull};
+        execAndFresh(fofaMapCmd);
     }
 
 //  从本地配置文件中读取之前选定过的工具文件夹
     public void initLoadTools() {
-        if (StringUtil.notEmpty(db.getLastXrayPath()) && StringUtil.notEmpty(db.getLastEnscanPath()) && StringUtil.notEmpty(db.getLastOneforallPath()) && StringUtil.notEmpty(db.getLastJsfinderPath()) && StringUtil.notEmpty(db.getLastCiprPath()) && !db.getLastEnscanPath().equals("null") && !db.getLastOneforallPath().equals("null") && !db.getLastJsfinderPath().equals("null") && !db.getLastCiprPath().equals("null") && !db.getLastXrayPath().equals("null")) {
-            loadRuiscan(db.getLastEnscanPath(), db.getLastOneforallPath(), db.getLastJsfinderPath(), db.getLastCiprPath(), db.getLastXrayPath());
+        if (StringUtil.notEmpty(db.getLastFofaMapPath()) && StringUtil.notEmpty(db.getLastXrayPath()) && StringUtil.notEmpty(db.getLastEnscanPath()) && StringUtil.notEmpty(db.getLastOneforallPath()) && StringUtil.notEmpty(db.getLastJsfinderPath()) && StringUtil.notEmpty(db.getLastCiprPath()) && !db.getLastEnscanPath().equals("null") && !db.getLastOneforallPath().equals("null") && !db.getLastJsfinderPath().equals("null") && !db.getLastCiprPath().equals("null") && !db.getLastXrayPath().equals("null") && !db.getLastFofaMapPath().equals("null")) {
+            loadRuiscan(db.getLastEnscanPath(), db.getLastOneforallPath(), db.getLastJsfinderPath(), db.getLastCiprPath(), db.getLastXrayPath(), db.getLastFofaMapPath());
             System.out.println("if exec in initLoadTools");
             showEnscanFileChoose.setText(db.getLastEnscanPath());
             showOneforallFileChoose.setText(db.getLastOneforallPath());
             showJsfinderFileChoose.setText(db.getLastJsfinderPath());
             showCiprFileChoose.setText(db.getLastCiprPath());
             showXrayFileChoose.setText(db.getLastXrayPath());
+            showFofaMapFileChoose.setText(db.getLastFofaMapPath());
         }
     }
 //  打开工具路径选择对话框
@@ -240,6 +259,26 @@ public class MainForm {
                 frame.setResizable(true);
                 frame.pack();
                 frame.setVisible(true);
+        });
+    }
+
+    public void initFofaForm() {
+        fofaButton.addActionListener(e -> {
+            String t = "FofaMap";
+            JFrame frame = new JFrame(t);
+            frame.setContentPane(new FofaForm().Fofa);
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setVisible(true);
+            frame.setSize(1280,500);
+            Toolkit kit = Toolkit.getDefaultToolkit();
+            Dimension screenSize=kit.getScreenSize();
+            int width = screenSize.width;
+            int height = screenSize.height;
+            final int WIDTH = 1280;
+            final int HEIGHT = 500;
+            int x=(width -WIDTH)/2;
+            int y=(height - HEIGHT)/2;
+            frame.setLocation(x,y);
         });
     }
 
@@ -255,32 +294,35 @@ public class MainForm {
         execENScanButton.addActionListener(e -> {
             String[] ensCmd = new String[]{"python", enscanPathFull, "-s", companyNmae};
             execAndFresh(ensCmd);
+
         });
 //      打开结果文件夹
         openResultDirButton.addActionListener(e -> {
-            try {
-                File directory = new File("");
+            if (!DirUtil.dirIsExist(resPath)) {
+                JOptionPane.showMessageDialog(RuiScan, "当前还没有运行过任何任务，结果文件夹不存在");
+            } else {
                 if (OsUtil.isWindows()) {
-                    Runtime.getRuntime().exec("explorer " + directory.getAbsolutePath() + "/res");
+                    execAndFresh(new String[]{"explorer", resPath});
                 } else {
-                    Runtime.getRuntime().exec("open " + directory.getAbsolutePath() + "/res");
+                    execAndFresh(new String[]{"open", resPath});
                 }
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
             }
         });
 //      从enscan结果中导出域名文件
         outputDomainButton.addActionListener(e -> {
-            File directory = new File("");
-            Path path = Paths.get(directory.getAbsolutePath() + "/res/" + outputFileConpanyName);
+            String companyPath = DirUtil.dirStructure(new String[]{resPath, outputFileConpanyName});
+            Path path = Paths.get(companyPath);
             try {
                 Path pathCreate = Files.createDirectory(path);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
             String timeString = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            String excelPath = directory.getAbsolutePath() + "/res/" + timeString + "-" + outputFileConpanyName + ".xlsx";
+            String excelPath = DirUtil.dirStructure(new String[]{currentPath, "res", timeString + "-" + outputFileConpanyName + ".xlsx"});
             Excel2Txt.excel2txt(excelPath, outputFileConpanyName);
+            resPath = DirUtil.dirStructure(new String[]{currentPath, "res", outputFileConpanyName});
+            domainFilePath = DirUtil.dirStructure(new String[]{resPath, "domain_" + outputFileConpanyName + ".txt"});
+
         });
     }
 
@@ -305,10 +347,10 @@ public class MainForm {
 //      执行JsFinder -->
         execJsFinderButton.addActionListener(e ->  {
             if (StringUtil.notEmpty(jsfinderTargetUrl)) {
-                String[] jsCmd = new String[]{"python", jsfinderPathFull, "-u", jsfinderTargetUrl, "-ou", "./res/" + outputFileConpanyName + '/' + jsfinderTargetUrl + "_url.txt", "-os", "./res/" + outputFileConpanyName + '/' + jsfinderTargetUrl.toString().replace(".", "_") + "_subdomain.txt"};
+                String[] jsCmd = new String[]{"python", jsfinderPathFull, "-u", jsfinderTargetUrl, "-ou", DirUtil.dirStructure(new String[]{currentPath, "res", jsfinderTargetUrl.toString().replace(".", "_") + "_url.txt"}), "-os", DirUtil.dirStructure(new String[]{currentPath, "res", jsfinderTargetUrl.toString().replace(".", "_") + "_subdomain.txt"})};
                 execAndFresh(jsCmd);
             } else if (StringUtil.notEmpty(jsfinderChooseDomainDir)) {
-                String[] jsCmd = new String[]{"python", jsfinderPathFull, "-f", jsfinderChooseDomainDir, "-ou", "./res/" + outputFileConpanyName + "/", "-os", "./res/" + outputFileConpanyName + "/"};
+                String[] jsCmd = new String[]{"python", jsfinderPathFull, "-f", jsfinderChooseDomainDir, "-ou", resPath, "-os", resPath};
                 System.out.println(String.join(" ", jsCmd));
                 execAndFresh(jsCmd);
             } else {
@@ -349,6 +391,7 @@ public class MainForm {
             outputTextArea.setText(null);
             outputTextArea.append("OneForAll 指定了单个域名 --> " + oneforallTargetUrl);
         });
+
 //      指定域名文件 -->  OneForAll读取指定域名文件
         oneforallChooseDomainDirButton.addActionListener(e -> {
             JFileChooser chooser = new JFileChooser(".");
@@ -360,32 +403,34 @@ public class MainForm {
                 oneforallChooseDomainDirTextField.setText("你好像啥也没选。。。");
             }
         });
+
 //      执行OneForAll --> 调用python命令执行OneForAll
         execOneForAllButton.addActionListener(e -> {
             if (StringUtil.notEmpty(oneforallChooseSingleDomainTextField.getText())) {
                 outputTextArea.setText(null);
                 outputTextArea.append("\n");
-                outputTextArea.append("开始执行OneForAll，命令为 --> python " + oneforallPathFull + " --target " + oneforallTargetUrl + " --path ./res/" + outputFileConpanyName + "/ run");
-                String[] oneforallCmd = new String[]{"python", oneforallPathFull, "--target", oneforallTargetUrl, "--path", "./res/" + outputFileConpanyName + "/", "run"};
-                execRunntime(oneforallCmd);
+                outputTextArea.append("开始执行OneForAll，命令为 --> python " + oneforallPathFull + " --target " + oneforallTargetUrl + " --path " + resPath + " run");
+                String[] oneforallCmd = new String[]{"python", oneforallPathFull, "--target", oneforallTargetUrl, "--path", resPath, "run"};
+                execAndFresh(oneforallCmd);
             } else if (StringUtil.notEmpty(oneforallChooseDomainDir)) {
                 outputTextArea.setText(null);
                 outputTextArea.append("\n");
-                outputTextArea.append("开始执行OneForAll，命令为 --> python " + oneforallPathFull + " --targets " + oneforallChooseDomainDir + " --path ./res/" + outputFileConpanyName + "/ run");
-                String[] oneforallCmd = new String[]{"python", oneforallPathFull, "--targets", oneforallChooseDomainDir, "--path", "./res/" + outputFileConpanyName + "/",  "run"};
-                execRunntime(oneforallCmd);
+                outputTextArea.append("开始执行OneForAll，命令为 --> python " + oneforallPathFull + " --targets " + oneforallChooseDomainDir + " --path " + resPath + " run");
+                String[] oneforallCmd = new String[]{"python", oneforallPathFull, "--targets", oneforallChooseDomainDir, "--path", resPath,  "run"};
+                execAndFresh(oneforallCmd);
                 outputTextArea.append("\n");
             } else {
                 outputTextArea.append("please choose single domain or domain dir for target");
             }
         });
+
 //      打开OneForAll配置文件夹 --> 调用系统命令打开OneForAll的配置文件夹
         openOneforallConfigDirButton.addActionListener(e -> {
             try {
                 if (OsUtil.isWindows()) {
-                    Runtime.getRuntime().exec("explorer " + oneforallPathFull.substring(0,oneforallPathFull.lastIndexOf("/")) + "/config");
+                    Runtime.getRuntime().exec("explorer " + DirUtil.dirStructure(new String[]{oneforallPathFull.substring(0,oneforallPathFull.lastIndexOf("\\")), "config"}));
                 } else {
-                    Runtime.getRuntime().exec("open " + oneforallPathFull.substring(0,oneforallPathFull.lastIndexOf("/")) + "/config");
+                    Runtime.getRuntime().exec("open " + DirUtil.dirStructure(new String[]{oneforallPathFull.substring(0,oneforallPathFull.lastIndexOf("/")), "config"}));
                 }
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
@@ -393,23 +438,68 @@ public class MainForm {
         });
     }
 
+//  继续断点任务，指定一个已存在的目标文件夹，以达到继续操作该任务的目的，底层原理就是全局将resPath设置为指定值
+    public void initCountinueMission() {
+        targetConfirmButton.addActionListener(e ->  {
+            if (StringUtil.notEmpty(chooseExsitTextFiled.getText())) {
+                startName = chooseExsitTextFiled.getText();
+                startPath = new String(DirUtil.dirStructure(new String[]{currentPath, "res", startName}));
+                resPath = startPath;
+                outputTextArea.append("你以开始断点任务，任务名称为 --->  " + startName + "\n断点任务结果路径为 ---> " + startPath);
+            } else {
+                JOptionPane.showMessageDialog(RuiScan, "请先指定一个要继续操作的公司名称，名字与结果文件夹中的以公司名字为名称的文件夹一致");
+            }
+        });
+    }
+
+//  一键无差别日站，暂时的功能是将上面聚合的Subdomain直接导入xray进行探测
     public void initOneKeyForAll() {
         onekeyAutoButton.addActionListener(e -> {
-            String resultPath = new File("").getAbsolutePath() + "/res/" + outputFileConpanyName;
-            String domainFilePath = new File("").getAbsolutePath() + "/res/" + outputFileConpanyName + "/domain_" + outputFileConpanyName + ".txt";
-            FileInputStream inputStream = null;
+            if (StringUtil.notEmpty(outputFileConpanyName)) {
+//            手动将任务以多线程的方式加入xray扫描，之后可以做一个限制  例如每次加10个线程进去执行，结束后再创建10个
+//            FileInputStream inputStream = null;
+//            try {
+//                inputStream = new FileInputStream(domainFilePath);
+//                  BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+//                String str = null;
+//                while ((str = bufferedReader.readLine()) != null) {
+//                    System.out.println(str);
+//                    String[] xrayCmd = new String[]{xrayPathFull, "webscan", "--url", str, "--html-output", resultPath + "/" + str.replace(".", "_") + ".html"};
+//                }
+//            } catch (IOException ex) {
+//                throw new RuntimeException(ex);
+//            }
+                String[] xrayCmd = new String[]{xrayPathFull, "webscan", "--url-file", domainFilePath, "--html-output", DirUtil.dirStructure(new String[]{resPath, "xray_" + outputFileConpanyName + ".html"})};
+                execAndFresh(xrayCmd);
+            } else {
+                JOptionPane.showMessageDialog(RuiScan, "请先指定公司名运行ENScan然后提取域名然后再点击这里");
+            }
+        });
+    }
+
+//  在outputTextArea区域输出xray内置的POC
+    public void initLookAllPoc() {
+        showAllPocButton.addActionListener(e ->  {
+            String[] xrayCmd = new String[]{xrayPathFull, "ws", "--list"};
+            execAndFresh(xrayCmd);
+        });
+    }
+
+//  一键聚合结果，将OneForAll的SubDomain和ENScan提取的Subdomain进行聚合
+    public void initPolymerization() {
+        startFingerButton.addActionListener(e -> {
+            String missionDir = resPath;
+            if (!StringUtil.notEmpty(outputFileConpanyName)) {
+                missionDir = new String(DirUtil.dirStructure(new String[]{resPath, chooseExsitTextFiled.getText()}));
+            }
+            String allSubDomainTxt = DirUtil.findAllSubDomainTxt(missionDir);
             try {
-                inputStream = new FileInputStream(domainFilePath);
-
-
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String str = null;
-                while ((str = bufferedReader.readLine()) != null) {
-                    System.out.println(str);
-// /Users/lichengxuan/Desktop/tools/xray/xray_darwin_arm64 --config /Users/lichengxuan/Desktop/tools/xray/./config.yaml webscan --url 119.3.180.95 --html-output /Users/lichengxuan/IdeaProjects/super-xray-1.1/./xray-2a6d37c4-2c9f-44f8-96b9-cb1f245462ae.html
-                    String[] xrayCmd = new String[]{xrayPathFull, "webscan", "--url", str, "--html-output", resultPath + "/" + str.replace(".", "_") + ".html"};
-                    execAndFresh(xrayCmd);
+                ArrayList<String> domainList = StringUtil.domainControl(allSubDomainTxt);
+                if (!StringUtil.notEmpty(domainFilePath)) {
+                    domainFilePath = DirUtil.dirStructure(new String[]{currentPath, "res", chooseExsitTextFiled.getText(), "domain_" + chooseExsitTextFiled.getText() + ".txt"});
                 }
+                System.out.println(domainFilePath);
+                StringUtil.write2txt(domainList, domainFilePath);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -420,11 +510,15 @@ public class MainForm {
         init();
         initLoadTools();
         initToolPathChoose();
+        initFofaForm();
         initExecEnscan();
         initExecJsfinder();
         initExecCipr();
         initExecOneforall();
         initOneKeyForAll();
+        initLookAllPoc();
+        initPolymerization();
+        initCountinueMission();
     }
 
     public static void startMainForm() {
@@ -432,9 +526,16 @@ public class MainForm {
         instance = new MainForm();
         frame.setContentPane(instance.RuiScan);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
         frame.setVisible(true);
-
-//        frame.setSize(1280,960);
+        frame.setSize(1280,700);
+        Toolkit kit = Toolkit.getDefaultToolkit();
+        Dimension screenSize=kit.getScreenSize();
+        int width = screenSize.width;
+        int height = screenSize.height;
+        final int WIDTH = 1280;
+        final int HEIGHT = 700;
+        int x=(width -WIDTH)/2;
+        int y=(height - HEIGHT)/2;
+        frame.setLocation(x,y);
     }
 }

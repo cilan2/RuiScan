@@ -1,4 +1,5 @@
 package com.reve2se.ruiscan.model;
+import com.reve2se.ruiscan.utils.DirUtil;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -17,10 +18,10 @@ public class Excel2Txt {
     public static void excel2txt(String excelPath, String company_name) {
         try {
             File directory = new File("");
-            File domain_file = new File(directory.getAbsolutePath() + "/res/" + company_name + "/domain_" + company_name + ".txt");
+            File domain_file = new File(DirUtil.dirStructure(new String[]{directory.getAbsolutePath(), "res", company_name, "domain_" + company_name + ".txt"}));
             FileWriter domain_fw = new FileWriter(domain_file);
             BufferedWriter domain_bw = new BufferedWriter(domain_fw);
-            File ip_file = new File(directory.getAbsolutePath() + "/res/" + company_name + "/ip_" + company_name + ".txt");
+            File ip_file = new File(DirUtil.dirStructure(new String[]{directory.getAbsolutePath(), "res", company_name, "ip_" + company_name + ".txt"}));
             FileWriter ip_fw = new FileWriter(ip_file);
             BufferedWriter ip_bw = new BufferedWriter(ip_fw);
             String ip = "([1-9]|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3}";

@@ -12,7 +12,7 @@ import java.io.*;
 public class ReadExcel {
     public static void main(String[] args) {
         //excel文件路径
-        String excelPath = "/Users/lichengxuan/Desktop/ruiscan/tools/ENScan/res/2023-01-12-南瑞集团有限公司.xlsx";
+        String excelPath = "/Users/lichengxuan/IdeaProjects/RuiScan/res/南瑞集团有限公司/2023-01-17-南瑞集团有限公司.xlsx";
 
         try {
             File directory = new File("");

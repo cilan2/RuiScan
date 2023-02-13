@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.reve2se.ruiscan.form.FofaForm">
+  <grid id="27dc6" binding="Fofa" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="825" height="663"/>
+    </constraints>
+    <properties>
+      <background color="-725535"/>
+    </properties>
+    <border type="none" title=""/>
+    <children>
+      <grid id="a1082" binding="FofaLoginInfo" layout-manager="GridLayoutManager" row-count="1" column-count="7" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-725535"/>
+          <toolTipText value=""/>
+        </properties>
+        <border type="none" title="Fofa登录信息"/>
+        <children>
+          <component id="dbfb0" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="66" height="14"/>
+              </grid>
+            </constraints>
+            <properties>
+              <text value="Fofa_email"/>
+            </properties>
+          </component>
+          <component id="e0778" class="javax.swing.JTextField" binding="fofaEmailTextField">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="14"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="6277f" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="77" height="14"/>
+              </grid>
+            </constraints>
+            <properties>
+              <text value="Fofa_key"/>
+            </properties>
+          </component>
+          <component id="aa36b" class="javax.swing.JTextField" binding="fofaKeyTextField">
+            <constraints>
+              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="14"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="93c0f" class="javax.swing.JButton" binding="confirmFofaLoginButton">
+            <constraints>
+              <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="78" height="14"/>
+              </grid>
+            </constraints>
+            <properties>
+              <text value="确认"/>
+            </properties>
+          </component>
+          <component id="b9956" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="默认查询数量"/>
+            </properties>
+          </component>
+          <component id="18e33" class="javax.swing.JComboBox" binding="FofaResCountComboBox">
+            <constraints>
+              <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <model>
+                <item value="100"/>
+                <item value="1000"/>
+                <item value="10000"/>
+              </model>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="603b7" binding="FingerprintScreening" layout-manager="GridLayoutManager" row-count="4" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-725535"/>
+        </properties>
+        <border type="none" title="指纹筛选"/>
+        <children>
+          <component id="b8302" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="选择域名文件"/>
+            </properties>
+          </component>
+          <component id="8e21f" class="javax.swing.JTextField" binding="fofaDomainFileTextField">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="3637d" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="指定单个域名"/>
+            </properties>
+          </component>
+          <component id="37d20" class="javax.swing.JTextField" binding="fofaSingleDomainTextField">
+            <constraints>
+              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <grid id="89192" layout-manager="GridLayoutManager" row-count="1" column-count="10" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="5" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-725535"/>
+            </properties>
+            <border type="none" title="内置指纹规则"/>
+            <children>
+              <component id="47765" class="javax.swing.JCheckBox" binding="shiroCheckBox" default-binding="true">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Shiro"/>
+                </properties>
+              </component>
+              <component id="7c7e" class="javax.swing.JCheckBox" binding="fastjsonCheckBox" default-binding="true">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Fastjson"/>
+                </properties>
+              </component>
+              <component id="8349b" class="javax.swing.JCheckBox" binding="ueditorCheckBox">
+                <constraints>
+                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="UEditor"/>
+                </properties>
+              </component>
+              <component id="24e55" class="javax.swing.JCheckBox" binding="springBootCheckBox" default-binding="true">
+                <constraints>
+                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Spring-boot"/>
+                </properties>
+              </component>
+              <component id="51dc2" class="javax.swing.JButton" binding="builtInCommandButton">
+                <constraints>
+                  <grid row="0" column="9" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="确认"/>
+                </properties>
+              </component>
+              <component id="f6ee9" class="javax.swing.JCheckBox" binding="weaverOACheckBox">
+                <constraints>
+                  <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="泛微OA"/>
+                </properties>
+              </component>
+              <component id="c605c" class="javax.swing.JCheckBox" binding="seeyonOACheckBox">
+                <constraints>
+                  <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="致远OA"/>
+                </properties>
+              </component>
+              <component id="2cb3e" class="javax.swing.JCheckBox" binding="yonyouOACheckBox">
+                <constraints>
+                  <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="用友OA"/>
+                </properties>
+              </component>
+              <component id="895a9" class="javax.swing.JCheckBox" binding="tongdaOACheckBox">
+                <constraints>
+                  <grid row="0" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="通达OA"/>
+                </properties>
+              </component>
+              <component id="8c25c" class="javax.swing.JCheckBox" binding="kingdeeCheckBox">
+                <constraints>
+                  <grid row="0" column="8" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="金蝶"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="ffbe8" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="5" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-725535"/>
+            </properties>
+            <border type="none" title="自定义指纹"/>
+            <children>
+              <component id="c7327" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="输入自定义指纹"/>
+                </properties>
+              </component>
+              <component id="76073" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="63627" class="javax.swing.JButton" binding="确认Button" default-binding="true">
+                <constraints>
+                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="确认"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <component id="7d4d4" class="javax.swing.JButton" binding="fofaMapChooseDomainFileButton">
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="选择域名文件"/>
+            </properties>
+          </component>
+          <scrollpane id="ae1c8">
+            <constraints>
+              <grid row="3" column="0" row-span="1" col-span="5" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                <minimum-size width="-1" height="200"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-725535"/>
+              <foreground color="-725535"/>
+            </properties>
+            <border type="none" title="FofaMap命令行输出结果"/>
+            <children>
+              <component id="77344" class="javax.swing.JTextArea" binding="fofaMapOutputTextArea">
+                <constraints/>
+                <properties>
+                  <background color="-12828863"/>
+                  <editable value="false"/>
+                  <foreground color="-725535"/>
+                  <lineWrap value="true"/>
+                  <text value=""/>
+                </properties>
+              </component>
+            </children>
+          </scrollpane>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

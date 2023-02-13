@@ -9,26 +9,26 @@ public class DB {
     private String lastJsfinderPath;
     private String lastCiprPath;
     private String lastXrayPath;
+    private String lastFofaMapPath;
 
 
     public String getLastEnscanPath() {
         return lastEnscanPath;
     }
-
     public String getLastOneforallPath() {
         return lastOneforallPath;
     }
-
     public String getLastJsfinderPath() {
         return lastJsfinderPath;
     }
-
     public String getLastCiprPath() {
         return lastCiprPath;
     }
-
     public String getLastXrayPath() {
         return lastXrayPath;
+    }
+    public String getLastFofaMapPath() {
+        return lastFofaMapPath;
     }
 
     public void setLastEnscanPath(String lastEnscanPath) {
@@ -46,11 +46,16 @@ public class DB {
     public void setLastXrayPath(String lastXrayPath) {
         this.lastXrayPath = lastXrayPath;
     }
-
-    public String getDB() {
-        return String.format("%s=%s;%s=%s;%s=%s;%s=%s;%s=%s", "lastEnscanPath", getLastEnscanPath(), "lastOneforallPath", getLastOneforallPath(), "lastJsfinderPath", getLastJsfinderPath(), "lastCiprPath", getLastCiprPath(), "lastXrayPath", getLastXrayPath());
+    public void setLastFofaMapPath(String lastFofaMapPath) {
+        this.lastFofaMapPath = lastFofaMapPath;
     }
 
+//    初始化数据库格式
+    public String getDB() {
+        return String.format("%s=%s;%s=%s;%s=%s;%s=%s;%s=%s;%s=%s", "lastEnscanPath", getLastEnscanPath(), "lastOneforallPath", getLastOneforallPath(), "lastJsfinderPath", getLastJsfinderPath(), "lastCiprPath", getLastCiprPath(), "lastXrayPath", getLastXrayPath(), "lastFofaMapPath", getLastFofaMapPath());
+    }
+
+//    将工具路径写入数据库
     public static DB parseDB(byte[] data) {
         DB db = new DB();
         String[] temp = new String(data).split(";");
@@ -59,6 +64,7 @@ public class DB {
         db.setLastJsfinderPath(temp[2].split("=")[1]);
         db.setLastCiprPath(temp[3].split("=")[1]);
         db.setLastXrayPath(temp[4].split("=")[1]);
+        db.setLastFofaMapPath(temp[5].split("=")[1]);
         return db;
     }
     public void saveDB() {

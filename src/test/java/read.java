@@ -1,5 +1,8 @@
-package main.demo;
 
+import com.reve2se.ruiscan.utils.OsUtil;
+
+import java.io.File;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,6 +22,15 @@ public class read {
             System.out.println("ip:" + m.group(1));
             System.out.println("port:" + m.group(2));
         }
-
+        ArrayList<String> files = new ArrayList<String>();
+        String path = new String(".");
+        File file = new File(path);
+        File[] tempList = file.listFiles();
+        for (int i = 0; i < tempList.length; i++) {
+//            if (tempList[i].isFile()) {
+                System.out.println(tempList[i]);
+//            }
+        }
     }
+
 }
