@@ -141,11 +141,15 @@ public class FofaForm {
                 fofaMapOutputTextArea.append("\n");
                 StringUtil.autoReplace(fofaMapConfigPath, "key = xxxxxxxxxx", "key = " + fofaKeyTextField.getText());
                 fofaMapOutputTextArea.append("已将key信息写入fofa.ini");
+                fofaMapOutputTextArea.append("\n");
+                StringUtil.autoReplace(fofaMapConfigPath, "size = 100", "size = " + FofaResCountComboBox.getSelectedItem());
+                fofaMapOutputTextArea.append("已将最大查询数写入fofa.ini");
+                fofaMapOutputTextArea.append("\n");
                 StringUtil.autoReplace(fofaMapExecFilePath, "config.read('fofa.ini', encoding=\"utf-8\")", "config.read('" + fofaMapConfigPath + "', encoding=\"utf-8\")");
                 String fofaExec1 = new String(DirUtil.dirStructure(new String[]{db.getLastFofaMapPath().substring(0,db.getLastFofaMapPath().lastIndexOf("/")), "fofa.py"}));
                 StringUtil.autoReplace(fofaExec1, "config.read('fofa.ini', encoding=\"utf-8\")", "config.read('" + fofaMapConfigPath + "', encoding=\"utf-8\")");
-                fofaMapOutputTextArea.append("\n");
                 fofaMapOutputTextArea.append("已改写配置文件路径为绝对路径");
+                fofaMapOutputTextArea.append("\n");
                 String[] fofaMapTest = new String[]{"python", fofaMapExecFilePath};
                 execAndFresh(fofaMapTest);
 
@@ -229,7 +233,7 @@ public class FofaForm {
                     while ((line = br.readLine()) != null) {
                         fofaMapOutputTextArea.append("规定的指纹规则为 ---> " + "domain=\"" + line + "\" && (" + rules + ")");
                         Thread.sleep(2000);
-                        String[] fofaExecCmd = new String[]{"python", fofaMapExecFilePath, "-q", "domain=\"" + line + "\" && (" + rules + ")", "-o", DirUtil.dirStructure(new String[]{MainForm.resPath, line.replace(".", "_") + ".xlsx "})};
+                        String[] fofaExecCmd = new String[]{"python", fofaMapExecFilePath, "-q", "domain=\"" + line + "\" && (" + rules + ")", "-o", DirUtil.dirStructure(new String[]{fofaMapRes, line.replace(".", "_") + ".xlsx "})};
                         execAndFresh(fofaExecCmd);
                     }
                     // close the reader

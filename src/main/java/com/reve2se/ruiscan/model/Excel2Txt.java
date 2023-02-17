@@ -1,11 +1,13 @@
 package com.reve2se.ruiscan.model;
 import com.reve2se.ruiscan.utils.DirUtil;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.BufferedWriter;
@@ -32,54 +34,64 @@ public class Excel2Txt {
             if (excel.isFile() && excel.exists()) { //判断文件是否存在
 
                 String[] split = excel.getName().split("\\."); //.是特殊字符，需要转义！！！！！
-                Workbook wb;
 
                 //根据文件后缀（xls/xlsx）进行判断
                 if ("xls".equals(split[1])) {
                     FileInputStream fis = new FileInputStream(excel); //文件流对象
-                    wb = new HSSFWorkbook(fis);
+                    HSSFWorkbook wb = new HSSFWorkbook(fis);
+
+                    //开始解析
+                    HSSFSheet sheet = wb.getSheetAt(0); //读取sheet 0
+                    int firstRowIndex = sheet.getFirstRowNum() + 1; //第一行是列名，所以不读
+                    int lastRowIndex = sheet.getLastRowNum();
+                    for (int rIndex = firstRowIndex; rIndex <= lastRowIndex;
+                         rIndex++) { //遍历行
+                        HSSFRow row = sheet.getRow(rIndex);
+                        if (row != null) {
+                            HSSFCell cell = row.getCell(0);
+
+                            if (cell != null) {
+                                if (pattern.matcher(cell.toString()).matches()) {
+                                    ip_bw.write(cell.toString());
+                                    ip_bw.flush();
+                                    ip_bw.newLine();
+                                } else {
+                                    domain_bw.write(cell.toString());
+                                    domain_bw.flush();
+                                    domain_bw.newLine();
+                                }
+                            }
+                        }
+                    }
                 } else if ("xlsx".equals(split[1])) {
-                    wb = new XSSFWorkbook(excel);
+                    XSSFWorkbook wb = new XSSFWorkbook(excel);
+                    //开始解析
+                    XSSFSheet sheet = wb.getSheetAt(0); //读取sheet 0
+                    int firstRowIndex = sheet.getFirstRowNum() + 1; //第一行是列名，所以不读
+                    int lastRowIndex = sheet.getLastRowNum();
+                    for (int rIndex = firstRowIndex; rIndex <= lastRowIndex;
+                         rIndex++) { //遍历行
+                        XSSFRow row = sheet.getRow(rIndex);
+                        if (row != null) {
+                            XSSFCell cell = row.getCell(0);
+
+                            if (cell != null) {
+                                if (pattern.matcher(cell.toString()).matches()) {
+                                    ip_bw.write(cell.toString());
+                                    ip_bw.flush();
+                                    ip_bw.newLine();
+                                } else {
+                                    domain_bw.write(cell.toString());
+                                    domain_bw.flush();
+                                    domain_bw.newLine();
+                                }
+                            }
+                        }
+                    }
                 } else {
                     System.out.println("文件类型错误!");
 
                     return;
-                }
-
-                //开始解析
-                Sheet sheet = wb.getSheetAt(0); //读取sheet 0
-
-                int firstRowIndex = sheet.getFirstRowNum() + 1; //第一行是列名，所以不读
-                int lastRowIndex = sheet.getLastRowNum();
-//                System.out.println("firstRowIndex: " + firstRowIndex);
-//                System.out.println("lastRowIndex: " + lastRowIndex);
-
-                for (int rIndex = firstRowIndex; rIndex <= lastRowIndex;
-                     rIndex++) { //遍历行
-                    Row row = sheet.getRow(rIndex);
-
-                    if (row != null) {
-//                        int firstCellIndex = row.getFirstCellNum();
-//                        int lastCellIndex = row.getLastCellNum();
-
-//                        for (int cIndex = firstCellIndex;
-//                             cIndex < lastCellIndex; cIndex++) { //遍历列
-
-                        Cell cell = row.getCell(0);
-
-                        if (cell != null) {
-                            if (pattern.matcher(cell.toString()).matches()) {
-                                ip_bw.write(cell.toString());
-                                ip_bw.flush();
-                                ip_bw.newLine();
-                            } else {
-                                domain_bw.write(cell.toString());
-                                domain_bw.flush();
-                                domain_bw.newLine();
-                            }
-                        }
-//                        }
-                    }
                 }
             } else {
                 System.out.println("找不到指定的文件");
@@ -88,4 +100,5 @@ public class Excel2Txt {
             e.printStackTrace();
         }
     }
+
 }
