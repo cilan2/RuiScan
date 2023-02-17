@@ -7,15 +7,13 @@ import com.reve2se.ruiscan.utils.OsUtil;
 import com.reve2se.ruiscan.utils.StringUtil;
 
 import javax.swing.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,19 +34,31 @@ public class FofaForm {
     private JCheckBox weaverOACheckBox;
     private JCheckBox yonyouOACheckBox;
     private JCheckBox tongdaOACheckBox;
+    private JCheckBox kingdeeCheckBox;
     private JTextArea fofaMapOutputTextArea;
     private JButton builtInCommandButton;
     private JButton fofaMapChooseDomainFileButton;
-    private JTextField textField1;
-    private JButton 确认Button;
+    private JTextField userRulesTextField;
     private JComboBox FofaResCountComboBox;
-    private JCheckBox kingdeeCheckBox;
     private DB db;
     private String fofaMapConfigPath;
     private String fofaMapExecFilePath;
     private String fofaMapDomainFilePath;
     private volatile boolean stop = false;
     public List<String> checkBoxConfirm = new ArrayList<>();
+    public String fofaMapRes;
+    private static final Map<String, String> rulesMap = new HashMap<String, String>();
+    static{
+        rulesMap.put("shiro", "header=\"rememberme=deleteMe\" || header=\"shiroCookie\"");
+        rulesMap.put("fastjson", "");
+        rulesMap.put("ueditor", "app=\"百度-UEditor\" && server=\"Microsoft-IIS/7.5\"");
+        rulesMap.put("Spring-boot", "app=\"vmware-SpringBoot-framework\"");
+        rulesMap.put("weaverOA", "header=\"Set-Cookie: ecology_JSessionId=\" || app=\"泛微-EMobile\"");
+        rulesMap.put("seeyon", "title =\"A8\" || app=\"致远互联-A8-V5\" || app=\"致远互联-OA\"");
+        rulesMap.put("yonyouOA", "app=\"用友-UFIDA-NC\"");
+        rulesMap.put("tongdaOA", "app=\"TDXK-通达OA\"");
+        rulesMap.put("kingdee", "body=\"easSessionId\" || body=\"/kdgs/script/kdgs.js\"");
+    }
 
     //  一个被封装好的执行命令
     private void execAndFresh(String[] finalCmd) {
@@ -163,42 +173,84 @@ public class FofaForm {
             checkBoxConfirm.clear();
             if (shiroCheckBox.isSelected()) {
                 checkBoxConfirm.add("shiro");
+                System.out.println(rulesMap.get("shiro"));
             }
             if (fastjsonCheckBox.isSelected()) {
                 checkBoxConfirm.add("fastjson");
+                System.out.println(rulesMap.get("fastjson"));
             }
             if (ueditorCheckBox.isSelected()) {
                 checkBoxConfirm.add("ueditor");
+                System.out.println(rulesMap.get("ueditor"));
             }
             if (springBootCheckBox.isSelected()) {
                 checkBoxConfirm.add("Spring-boot");
+                System.out.println(rulesMap.get("Spring-boot"));
             }
             if (weaverOACheckBox.isSelected()) {
                 checkBoxConfirm.add("weaverOA");
+                System.out.println(rulesMap.get("weaverOA"));
             }
             if (seeyonOACheckBox.isSelected()) {
                 checkBoxConfirm.add("seeyon");
+                System.out.println(rulesMap.get("seeyon"));
             }
             if (yonyouOACheckBox.isSelected()) {
                 checkBoxConfirm.add("yonyouOA");
+                System.out.println(rulesMap.get("yonyouOA"));
             }
             if (tongdaOACheckBox.isSelected()) {
                 checkBoxConfirm.add("tongdaOA");
+                System.out.println(rulesMap.get("tongdaOA"));
             }
             if (kingdeeCheckBox.isSelected()) {
                 checkBoxConfirm.add("kingdee");
+                System.out.println(rulesMap.get("kingdee"));
             }
+            // 组合指纹构建
+            String rules = new String("");
+            for (int i = 0; i < checkBoxConfirm.size(); i++) {
+                rules = rules + " || " + rulesMap.get(checkBoxConfirm.get(i));
+            }
+            rules = rules.replaceFirst(" \\|\\| ", "");
+
             // fofaMap执行逻辑
             if (StringUtil.notEmpty(fofaDomainFileTextField.getText())) {
-                String[] fofaExecCmd = new String[]{"python", fofaMapExecFilePath, "-bq", fofaMapDomainFilePath};
-                execAndFresh(fofaExecCmd);
+            // 如果输入是一个domain file的话就在当前的res目录下再创建一个fofaMapRes目录用于存放结果
+                fofaMapRes = DirUtil.dirStructure(new String[]{MainForm.resPath, "fofaMapRes"});
+                String[] fofaMkdirExecCmd = new String[]{"mkdir", fofaMapRes};
+                execAndFresh(fofaMkdirExecCmd);
+            // 从目标文件中逐行读取域名来给fofaMap执行，并且指定输出文件的名字和路径
+                try {
+                    // create a reader instance
+                    BufferedReader br = new BufferedReader(new FileReader(fofaDomainFileTextField.getText()));
+                    // read until end of file
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        fofaMapOutputTextArea.append("规定的指纹规则为 ---> " + "domain=\"" + line + "\" && (" + rules + ")");
+                        Thread.sleep(2000);
+                        String[] fofaExecCmd = new String[]{"python", fofaMapExecFilePath, "-q", "domain=\"" + line + "\" && (" + rules + ")", "-o", DirUtil.dirStructure(new String[]{MainForm.resPath, line.replace(".", "_") + ".xlsx "})};
+                        execAndFresh(fofaExecCmd);
+                    }
+                    // close the reader
+                    br.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+
+
             } else if (StringUtil.notEmpty(fofaSingleDomainTextField.getText())) {
-                String[] fofaExecCmd = new String[]{"python", fofaMapExecFilePath, "-q", fofaSingleDomainTextField.getText(), "-o", DirUtil.dirStructure(new String[]{"res", fofaSingleDomainTextField.getText().replace(".", "_") + ".xlsx "})};
+                String[] fofaExecCmd = new String[]{"python", fofaMapExecFilePath, "-q", "domain=\"" + fofaSingleDomainTextField.getText() + "\" && (" + userRulesTextField.getText() + ")", "-o", DirUtil.dirStructure(new String[]{MainForm.resPath, fofaSingleDomainTextField.getText().replace(".", "_") + ".xlsx "})};
                 execAndFresh(fofaExecCmd);
             } else {
                 JOptionPane.showMessageDialog(Fofa, "请选择一个目标");
             }
         });
+
+
     }
 
     public FofaForm() {

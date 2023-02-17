@@ -10,6 +10,7 @@ public class DB {
     private String lastCiprPath;
     private String lastXrayPath;
     private String lastFofaMapPath;
+    private String lastFscanPath;
 
 
     public String getLastEnscanPath() {
@@ -30,6 +31,9 @@ public class DB {
     public String getLastFofaMapPath() {
         return lastFofaMapPath;
     }
+    public String getLastFscanPath() {
+        return lastFscanPath;
+    }
 
     public void setLastEnscanPath(String lastEnscanPath) {
         this.lastEnscanPath = lastEnscanPath;
@@ -49,10 +53,13 @@ public class DB {
     public void setLastFofaMapPath(String lastFofaMapPath) {
         this.lastFofaMapPath = lastFofaMapPath;
     }
+    public void setLastFscanPath(String lastFscanPath) {
+        this.lastFscanPath = lastFscanPath;
+    }
 
 //    初始化数据库格式
     public String getDB() {
-        return String.format("%s=%s;%s=%s;%s=%s;%s=%s;%s=%s;%s=%s", "lastEnscanPath", getLastEnscanPath(), "lastOneforallPath", getLastOneforallPath(), "lastJsfinderPath", getLastJsfinderPath(), "lastCiprPath", getLastCiprPath(), "lastXrayPath", getLastXrayPath(), "lastFofaMapPath", getLastFofaMapPath());
+        return String.format("%s=%s;%s=%s;%s=%s;%s=%s;%s=%s;%s=%s;%s=%s", "lastEnscanPath", getLastEnscanPath(), "lastOneforallPath", getLastOneforallPath(), "lastJsfinderPath", getLastJsfinderPath(), "lastCiprPath", getLastCiprPath(), "lastXrayPath", getLastXrayPath(), "lastFofaMapPath", getLastFofaMapPath(), "lastFscanPath", getLastFscanPath());
     }
 
 //    将工具路径写入数据库
@@ -65,6 +72,7 @@ public class DB {
         db.setLastCiprPath(temp[3].split("=")[1]);
         db.setLastXrayPath(temp[4].split("=")[1]);
         db.setLastFofaMapPath(temp[5].split("=")[1]);
+        db.setLastFscanPath(temp[6].split("=")[1]);
         return db;
     }
     public void saveDB() {

@@ -17,6 +17,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainForm {
     public static MainForm instance;
@@ -51,7 +52,6 @@ public class MainForm {
     private JTextField choosePocTextField;
     private JButton pocConfirmButton;
     private JButton targetConfirmButton;
-    private JButton pocShowCommandButton;
     private JButton startExecPocButton;
     private JButton onekeyAutoButton;
     private JPanel execPoc;
@@ -75,6 +75,9 @@ public class MainForm {
     private JTextField chooseExsitTextFiled;
     private JButton fofaButton;
     private JTextField showFofaMapFileChoose;
+    private JRadioButton xrayRadioButton;
+    private JRadioButton fscanRadioButton;
+    private JTextField showFscanFileChoose;
     private static DB db;
     public static String enscanPathFull;
     public static String oneforallPathFull;
@@ -82,6 +85,7 @@ public class MainForm {
     public static String ciprPathFull;
     public static String xrayPathFull;
     public static String fofaMapPathFull;
+    public static String fscanPathFull;
     public static String companyNmae;
     public static String jsfinderTargetUrl;
     public static String ciprDomainDirPath;
@@ -94,6 +98,7 @@ public class MainForm {
     public static String startPath;
     public static String startName;
     public static String domainFilePath;
+    public static String ipFilePath;
     private volatile boolean stop = false;
 
 
@@ -117,6 +122,7 @@ public class MainForm {
                 db.setLastCiprPath(null);
                 db.setLastXrayPath(null);
                 db.setLastFofaMapPath(null);
+                db.setLastFscanPath(null);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -200,7 +206,7 @@ public class MainForm {
     }
 
 //  显示从数据库读到的工具路径过刚刚设置好的工具路径后进行初始化
-    public void loadRuiscan(String enscanPath, String oneforallPath, String jsfinderPath, String ciprPath, String xrayPath, String fofaMapPath) {
+    public void loadRuiscan(String enscanPath, String oneforallPath, String jsfinderPath, String ciprPath, String xrayPath, String fofaMapPath, String fscanPath) {
 //        String targetDir = Paths.get(enscanPath).toFile().getParent() + File.separator;
         enscanPathFull = enscanPath;
         oneforallPathFull = oneforallPath;
@@ -208,12 +214,14 @@ public class MainForm {
         ciprPathFull = ciprPath;
         xrayPathFull = xrayPath;
         fofaMapPathFull = fofaMapPath;
+        fscanPathFull = fscanPath;
         showEnscanFileChoose.setText(enscanPath);
         showOneforallFileChoose.setText(oneforallPath);
         showJsfinderFileChoose.setText(jsfinderPath);
         showCiprFileChoose.setText(ciprPath);
         showXrayFileChoose.setText(xrayPath);
         showFofaMapFileChoose.setText(fofaMapPath);
+        showFscanFileChoose.setText(fscanPath);
 //        outputTextArea.append("ENScan工具自检\n");
         String[] ensCmd = new String[]{"python", enscanPathFull, "--help"};
         execAndFresh(ensCmd);
@@ -230,17 +238,20 @@ public class MainForm {
         String[] ciprCmd = new String[]{ciprPathFull};
         execAndFresh(ciprCmd);
 //        outputTextArea.append("xray工具自检\n");
-        String[] xrayCmd = new String[]{xrayPathFull, "--help"};
+        String[] xrayCmd = new String[]{xrayPathFull, "version"};
         execAndFresh(xrayCmd);
 //        outputTextArea.append("FofaMap工具自检\n");
         String[] fofaMapCmd = new String[]{"python", fofaMapPathFull};
         execAndFresh(fofaMapCmd);
+//        outputTextArea.append("Fscan工具自检\n");
+        String[] fscanCmd = new String[]{fscanPathFull};
+        execAndFresh(fscanCmd);
     }
 
 //  从本地配置文件中读取之前选定过的工具文件夹
     public void initLoadTools() {
-        if (StringUtil.notEmpty(db.getLastFofaMapPath()) && StringUtil.notEmpty(db.getLastXrayPath()) && StringUtil.notEmpty(db.getLastEnscanPath()) && StringUtil.notEmpty(db.getLastOneforallPath()) && StringUtil.notEmpty(db.getLastJsfinderPath()) && StringUtil.notEmpty(db.getLastCiprPath()) && !db.getLastEnscanPath().equals("null") && !db.getLastOneforallPath().equals("null") && !db.getLastJsfinderPath().equals("null") && !db.getLastCiprPath().equals("null") && !db.getLastXrayPath().equals("null") && !db.getLastFofaMapPath().equals("null")) {
-            loadRuiscan(db.getLastEnscanPath(), db.getLastOneforallPath(), db.getLastJsfinderPath(), db.getLastCiprPath(), db.getLastXrayPath(), db.getLastFofaMapPath());
+        if (StringUtil.notEmpty(db.getLastFscanPath()) && StringUtil.notEmpty(db.getLastFofaMapPath()) && StringUtil.notEmpty(db.getLastXrayPath()) && StringUtil.notEmpty(db.getLastEnscanPath()) && StringUtil.notEmpty(db.getLastOneforallPath()) && StringUtil.notEmpty(db.getLastJsfinderPath()) && StringUtil.notEmpty(db.getLastCiprPath()) && !db.getLastEnscanPath().equals("null") && !db.getLastOneforallPath().equals("null") && !db.getLastJsfinderPath().equals("null") && !db.getLastCiprPath().equals("null") && !db.getLastXrayPath().equals("null") && !db.getLastFofaMapPath().equals("null") && !db.getLastFscanPath().equals("null")) {
+            loadRuiscan(db.getLastEnscanPath(), db.getLastOneforallPath(), db.getLastJsfinderPath(), db.getLastCiprPath(), db.getLastXrayPath(), db.getLastFofaMapPath(), db.getLastFscanPath());
             System.out.println("if exec in initLoadTools");
             showEnscanFileChoose.setText(db.getLastEnscanPath());
             showOneforallFileChoose.setText(db.getLastOneforallPath());
@@ -248,6 +259,7 @@ public class MainForm {
             showCiprFileChoose.setText(db.getLastCiprPath());
             showXrayFileChoose.setText(db.getLastXrayPath());
             showFofaMapFileChoose.setText(db.getLastFofaMapPath());
+            showFscanFileChoose.setText(db.getLastFscanPath());
         }
     }
 //  打开工具路径选择对话框
@@ -322,6 +334,7 @@ public class MainForm {
             Excel2Txt.excel2txt(excelPath, outputFileConpanyName);
             resPath = DirUtil.dirStructure(new String[]{currentPath, "res", outputFileConpanyName});
             domainFilePath = DirUtil.dirStructure(new String[]{resPath, "domain_" + outputFileConpanyName + ".txt"});
+            ipFilePath = DirUtil.dirStructure(new String[]{resPath, "ip_" + outputFileConpanyName + ".txt"});
 
         });
     }
@@ -445,6 +458,7 @@ public class MainForm {
                 startName = chooseExsitTextFiled.getText();
                 startPath = new String(DirUtil.dirStructure(new String[]{currentPath, "res", startName}));
                 resPath = startPath;
+                outputFileConpanyName = startName;
                 outputTextArea.append("你以开始断点任务，任务名称为 --->  " + startName + "\n断点任务结果路径为 ---> " + startPath);
             } else {
                 JOptionPane.showMessageDialog(RuiScan, "请先指定一个要继续操作的公司名称，名字与结果文件夹中的以公司名字为名称的文件夹一致");
@@ -469,8 +483,17 @@ public class MainForm {
 //            } catch (IOException ex) {
 //                throw new RuntimeException(ex);
 //            }
-                String[] xrayCmd = new String[]{xrayPathFull, "webscan", "--url-file", domainFilePath, "--html-output", DirUtil.dirStructure(new String[]{resPath, "xray_" + outputFileConpanyName + ".html"})};
-                execAndFresh(xrayCmd);
+                if (xrayRadioButton.isSelected()) {
+                    outputTextArea.append("\n");
+                    outputTextArea.append("当前选择的扫描工具是xray");
+                    String[] xrayCmd = new String[]{xrayPathFull, "webscan", "--url-file", domainFilePath, "--html-output", DirUtil.dirStructure(new String[]{resPath, "xray_" + outputFileConpanyName + ".html"})};
+                    execAndFresh(xrayCmd);
+                } else if (fscanRadioButton.isSelected()) {
+                    outputTextArea.append("\n");
+                    outputTextArea.append("当前选择的扫描工具是fscan");
+                    String[] fscanCmd = new String[]{fscanPathFull, "-hf", ipFilePath, "-o", DirUtil.dirStructure(new String[]{resPath, "fscan_" + outputFileConpanyName + ".txt"})};
+                    execAndFresh(fscanCmd);
+                }
             } else {
                 JOptionPane.showMessageDialog(RuiScan, "请先指定公司名运行ENScan然后提取域名然后再点击这里");
             }
@@ -493,13 +516,21 @@ public class MainForm {
                 missionDir = new String(DirUtil.dirStructure(new String[]{resPath, chooseExsitTextFiled.getText()}));
             }
             String allSubDomainTxt = DirUtil.findAllSubDomainTxt(missionDir);
+            String allSubDomainCsv = allSubDomainTxt.replace(".txt", ".csv");
             try {
                 ArrayList<String> domainList = StringUtil.domainControl(allSubDomainTxt);
+                List ipList = StringUtil.readcsv(allSubDomainCsv);
+                ipList = StringUtil.removeDuplicationByHashSet(ipList);
+                ipList.remove("ip");
                 if (!StringUtil.notEmpty(domainFilePath)) {
                     domainFilePath = DirUtil.dirStructure(new String[]{currentPath, "res", chooseExsitTextFiled.getText(), "domain_" + chooseExsitTextFiled.getText() + ".txt"});
+                    ipFilePath = DirUtil.dirStructure(new String[]{currentPath, "res", chooseExsitTextFiled.getText(), "ip_" + chooseExsitTextFiled.getText() + ".txt"});
                 }
                 System.out.println(domainFilePath);
+                System.out.println(ipFilePath);
                 StringUtil.write2txt(domainList, domainFilePath);
+                StringUtil.write2txt((ArrayList<String>) ipList, ipFilePath);
+
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }

@@ -55,6 +55,8 @@ public class ToolPathChoose {
     private JTextField fofaMapTextField;
     private JButton chooseFofaMapButton;
     private JLabel fofaMapPathLeabel;
+    private JTextField fscanTextField;
+    private JButton chooseFscanButton;
     private static String osType = "windows-amd64";
     private static String chooseEnscanPath;
     private static String chooseOneforallPath;
@@ -62,6 +64,7 @@ public class ToolPathChoose {
     private static String chooseCiprPath;
     private static String chooseXrayPath;
     private static String chooseFofaMapPath;
+    private static String chooseFscanPath;
 
 
     private void chooseToolDir() {
@@ -158,6 +161,21 @@ public class ToolPathChoose {
                 }
             }
         });
+        chooseFscanButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser chooser = new JFileChooser(".");
+                int option = chooser.showOpenDialog(ToolPathChose);
+                if (option == JFileChooser.APPROVE_OPTION) {
+                    String fscanFilePath = chooser.getSelectedFile().getAbsolutePath();
+                    fscanTextField.setText(fscanFilePath);
+                    chooseFscanPath = fscanFilePath;
+                    System.out.println("you choose fscan path is" + fscanFilePath);
+                } else {
+                    fscanTextField.setText("你好像啥也没选。。。");
+                }
+            }
+        });
     }
 
     private void tips() {
@@ -176,6 +194,7 @@ public class ToolPathChoose {
                 data.setLastCiprPath(chooseCiprPath);
                 data.setLastXrayPath(chooseXrayPath);
                 data.setLastFofaMapPath(chooseFofaMapPath);
+                data.setLastFscanPath(chooseFscanPath);
 
                 try {
                     Files.write(Paths.get("ruiscan.db"), data.getDB().getBytes());
@@ -183,7 +202,7 @@ public class ToolPathChoose {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-                MainForm.instance.loadRuiscan(chooseEnscanPath, chooseOneforallPath, chooseJsfinderPath, chooseCiprPath, chooseXrayPath, chooseFofaMapPath);
+                MainForm.instance.loadRuiscan(chooseEnscanPath, chooseOneforallPath, chooseJsfinderPath, chooseCiprPath, chooseXrayPath, chooseFofaMapPath, chooseFscanPath);
             }
         });
     }

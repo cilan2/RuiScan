@@ -264,7 +264,7 @@
           </component>
         </children>
       </grid>
-      <grid id="ed605" binding="execPoc" layout-manager="GridLayoutManager" row-count="2" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="ed605" binding="execPoc" layout-manager="GridLayoutManager" row-count="2" column-count="7" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="3" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -292,7 +292,7 @@
           </component>
           <component id="e8e60" class="javax.swing.JTextField" binding="choosePocTextField">
             <constraints>
-              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+              <grid row="0" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="200" height="-1"/>
               </grid>
             </constraints>
@@ -324,46 +324,6 @@
               <text value="确定目标"/>
             </properties>
           </component>
-          <component id="dc77b" class="javax.swing.JLabel">
-            <constraints>
-              <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="显示当前执行POC的模块&lt;xray/fscan/aforg&gt;"/>
-            </properties>
-          </component>
-          <component id="a993f" class="javax.swing.JButton" binding="pocShowCommandButton">
-            <constraints>
-              <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="显示当前命令"/>
-            </properties>
-          </component>
-          <component id="9977e" class="javax.swing.JButton" binding="startExecPocButton">
-            <constraints>
-              <grid row="1" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="开始执行"/>
-            </properties>
-          </component>
-          <component id="2b98c" class="javax.swing.JButton" binding="pocConfirmButton">
-            <constraints>
-              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="指定POC"/>
-            </properties>
-          </component>
-          <component id="4d9f0" class="javax.swing.JButton" binding="onekeyAutoButton">
-            <constraints>
-              <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="一键无差别日站"/>
-            </properties>
-          </component>
           <component id="d01b8" class="javax.swing.JTextField" binding="chooseExsitTextFiled">
             <constraints>
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
@@ -372,9 +332,49 @@
             </constraints>
             <properties/>
           </component>
+          <component id="2b98c" class="javax.swing.JButton" binding="pocConfirmButton">
+            <constraints>
+              <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="指定POC"/>
+            </properties>
+          </component>
+          <component id="4d9f0" class="javax.swing.JButton" binding="onekeyAutoButton">
+            <constraints>
+              <grid row="1" column="5" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="一键无差别日站"/>
+            </properties>
+          </component>
+          <component id="9977e" class="javax.swing.JButton" binding="startExecPocButton">
+            <constraints>
+              <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="开始执行"/>
+            </properties>
+          </component>
+          <component id="f3a93" class="javax.swing.JRadioButton" binding="xrayRadioButton" default-binding="true">
+            <constraints>
+              <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="xray"/>
+            </properties>
+          </component>
+          <component id="93922" class="javax.swing.JRadioButton" binding="fscanRadioButton" default-binding="true">
+            <constraints>
+              <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="fscan"/>
+            </properties>
+          </component>
         </children>
       </grid>
-      <grid id="98b6e" binding="alreadyChooseToolsDirJpanel" layout-manager="GridLayoutManager" row-count="3" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="98b6e" binding="alreadyChooseToolsDirJpanel" layout-manager="GridLayoutManager" row-count="3" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -404,9 +404,17 @@
               <text value="请在工具路径选择模块中选择或下载工具"/>
             </properties>
           </component>
-          <component id="ea790" class="javax.swing.JTextField" binding="showJsfinderFileChoose">
+          <component id="e58ff" class="javax.swing.JLabel" binding="oneforallFileCho">
             <constraints>
-              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="OneForAll"/>
+            </properties>
+          </component>
+          <component id="6ddbe" class="javax.swing.JTextField" binding="showOneforallFileChoose">
+            <constraints>
+              <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
@@ -416,15 +424,35 @@
               <text value="请在工具路径选择模块中选择或下载工具"/>
             </properties>
           </component>
-          <component id="e58ff" class="javax.swing.JLabel" binding="oneforallFileCho">
+          <component id="f525e" class="javax.swing.JTextField" binding="showCiprFileChoose">
+            <constraints>
+              <grid row="1" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <editable value="false"/>
+              <enabled value="false"/>
+              <text value="请在工具路径选择模块中选择或下载工具"/>
+            </properties>
+          </component>
+          <component id="ad020" class="javax.swing.JLabel" binding="ciprFileChoose">
+            <constraints>
+              <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="cIPR"/>
+            </properties>
+          </component>
+          <component id="aede3" class="javax.swing.JLabel" binding="jsfinderFileChoose">
             <constraints>
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="OneForAll"/>
+              <text value="JsFinder"/>
             </properties>
           </component>
-          <component id="6ddbe" class="javax.swing.JTextField" binding="showOneforallFileChoose">
+          <component id="ea790" class="javax.swing.JTextField" binding="showJsfinderFileChoose">
             <constraints>
               <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -436,37 +464,9 @@
               <text value="请在工具路径选择模块中选择或下载工具"/>
             </properties>
           </component>
-          <component id="aede3" class="javax.swing.JLabel" binding="jsfinderFileChoose">
-            <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="JsFinder"/>
-            </properties>
-          </component>
-          <component id="ad020" class="javax.swing.JLabel" binding="ciprFileChoose">
-            <constraints>
-              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="cIPR"/>
-            </properties>
-          </component>
-          <component id="f525e" class="javax.swing.JTextField" binding="showCiprFileChoose">
-            <constraints>
-              <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties>
-              <editable value="false"/>
-              <enabled value="false"/>
-              <text value="请在工具路径选择模块中选择或下载工具"/>
-            </properties>
-          </component>
           <component id="e0cfa" class="javax.swing.JLabel" binding="XrayFileChoose">
             <constraints>
-              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="xray"/>
@@ -474,7 +474,7 @@
           </component>
           <component id="1e5af" class="javax.swing.JTextField" binding="showXrayFileChoose">
             <constraints>
-              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
@@ -486,7 +486,7 @@
           </component>
           <component id="be3b9" class="javax.swing.JLabel">
             <constraints>
-              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="FofaMap"/>
@@ -494,12 +494,32 @@
           </component>
           <component id="3f9c0" class="javax.swing.JTextField" binding="showFofaMapFileChoose">
             <constraints>
-              <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+              <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
             <properties>
-              <background color="-1"/>
+              <background color="-855310"/>
+              <editable value="false"/>
+              <enabled value="false"/>
+              <text value="请在工具路径选择模块中选择或下载工具"/>
+            </properties>
+          </component>
+          <component id="397e5" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="fscan"/>
+            </properties>
+          </component>
+          <component id="e2b11" class="javax.swing.JTextField" binding="showFscanFileChoose">
+            <constraints>
+              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
               <editable value="false"/>
               <enabled value="false"/>
               <text value="请在工具路径选择模块中选择或下载工具"/>
@@ -534,4 +554,10 @@
       </scrollpane>
     </children>
   </grid>
+  <buttonGroups>
+    <group name="scan_tools">
+      <member id="f3a93"/>
+      <member id="93922"/>
+    </group>
+  </buttonGroups>
 </form>
